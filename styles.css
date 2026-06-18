@@ -1,0 +1,30 @@
+body {
+  max-width: 600px;
+  padding: 1rem;
+  font-family: serif;
+}
+
+header {
+  margin-bottom: 2rem;
+}
+
+#score-display {
+  margin-bottom: 1.5rem;
+}
+
+#question-card {
+  margin-bottom: 1.5rem;
+}
+
+#question-text {
+  margin-bottom: 1rem;
+}
+
+#options button {
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+#feedback-area {
+  margin-bottom: 1rem;
+}
