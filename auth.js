@@ -68,6 +68,7 @@ function startQuiz() {
   document.getElementById('user-display').textContent = currentUser
     ? 'Logged in as: ' + currentUser.email
     : 'Playing as guest';
+  document.getElementById('account-link').style.display = currentUser ? 'block' : 'none';
 
   renderQuestion();
 }
@@ -82,9 +83,12 @@ async function saveScore() {
 }
 
 // Controlla se c'è già una sessione attiva al caricamento della pagina
-sb.auth.getSession().then(({ data }) => {
-  if (data.session) {
-    currentUser = data.session.user;
-    startQuiz();
-  }
-});
+// (solo se startQuiz esiste: account.html non la definisce, gestisce la sessione da sé in account.js)
+if (typeof startQuiz === 'function') {
+  sb.auth.getSession().then(({ data }) => {
+    if (data.session) {
+      currentUser = data.session.user;
+      startQuiz();
+    }
+  });
+}

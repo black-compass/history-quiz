@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Account — History Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Account</h1>
+  </header>
+
+  <main id="account-main-section" style="display:none">
+    <p>Loggato come: <span id="account-email-display"></span></p>
+
+    <section id="change-password-section">
+      <h2>Cambia password</h2>
+      <input type="password" id="old-password" placeholder="Vecchia password">
+      <input type="password" id="new-password" placeholder="Nuova password">
+      <button onclick="changePassword()">Aggiorna password</button>
+      <p id="change-password-error"></p>
+      <p id="change-password-success"></p>
+    </section>
+
+    <section id="reset-email-section">
+      <h2>Password scordata?</h2>
+      <p>In alternativa, puoi ricevere un'email con un link per impostare una nuova password.</p>
+      <button onclick="sendResetEmail()">Invia link di reset via email</button>
+      <p id="reset-email-error"></p>
+      <p id="reset-email-success"></p>
+    </section>
+
+    <section id="delete-account-section">
+      <h2>Elimina account</h2>
+      <p>Questa azione cancellerà definitivamente il tuo account e tutti i dati associati (punteggi e progressi). Non è reversibile.</p>
+      <button id="delete-account-btn" onclick="showDeleteConfirm()">Elimina account</button>
+      <span id="delete-confirm" style="display:none">
+        Sei sicuro? L'operazione è permanente.
+        <button onclick="deleteAccount()">Sì, elimina definitivamente</button>
+        <button onclick="hideDeleteConfirm()">Annulla</button>
+      </span>
+      <p id="delete-error"></p>
+    </section>
+
+    <p><a href="index.html">&larr; Torna al quiz</a></p>
+  </main>
+
+  <section id="recovery-section" style="display:none">
+    <h2>Imposta una nuova password</h2>
+    <input type="password" id="recovery-new-password" placeholder="Nuova password">
+    <button onclick="setNewPasswordFromRecovery()">Imposta password</button>
+    <p id="recovery-error"></p>
+    <p id="recovery-success"></p>
+  </section>
+
+  <footer>
+    <p><a href="docs/privacy.html">Privacy Policy</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="auth.js"></script>
+  <script src="account.js"></script>
+</body>
+
+</html>
