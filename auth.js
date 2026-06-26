@@ -5,6 +5,40 @@ const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
 let currentUser = null;
 
+// Genera uno username automatico stile "utente_a3f9": prefisso fisso + 4
+// caratteri alfanumerici casuali (lettere minuscole + cifre).
+function generateRandomUsername() {
+  const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+  let suffix = '';
+  for (let i = 0; i < 4; i++) {
+    suffix += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return 'utente_' + suffix;
+}
+
+// Inserisce il profilo riprovando con un nuovo username generato in caso di
+// collisione (violazione del vincolo unique su profiles.username, codice
+// Postgres 23505). Si ferma dopo un numero massimo di tentativi.
+async function insertProfileWithRetry(userId, maxAttempts) {
+  for (let attempt = 0; attempt < maxAttempts; attempt++) {
+    const candidateUsername = generateRandomUsername();
+    const { error } = await sb
+      .from('profiles')
+      .insert({ id: userId, username: candidateUsername });
+
+    if (!error) {
+      return { username: candidateUsername, error: null };
+    }
+
+    // 23505 = unique_violation: l'username generato era già in uso, riprovo.
+    if (error.code !== '23505') {
+      return { username: null, error };
+    }
+  }
+
+  return { username: null, error: { message: 'Could not generate a unique username, please try again.' } };
+}
+
 async function signUp() {
   const email = document.getElementById('email').value;
   const password = document.getElementById('password').value;
@@ -16,7 +50,12 @@ async function signUp() {
     return;
   }
 
-  await sb.from('profiles').insert({ id: data.user.id, username: email });
+  const { error: profileError } = await insertProfileWithRetry(data.user.id, 5);
+
+  if (profileError) {
+    document.getElementById('auth-error').textContent = profileError.message;
+    return;
+  }
 
   currentUser = data.user;
   startQuiz();

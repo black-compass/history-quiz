@@ -28,3 +28,17 @@ header {
 #feedback-area {
   margin-bottom: 1rem;
 }
+
+#leaderboard-table {
+  border-collapse: collapse;
+  width: 100%;
+  margin-top: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+#leaderboard-table th,
+#leaderboard-table td {
+  border-bottom: 1px solid;
+  padding: 0.3rem 0.6rem;
+  text-align: left;
+}

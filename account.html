@@ -17,6 +17,16 @@
   <main id="account-main-section" style="display:none">
     <p>Loggato come: <span id="account-email-display"></span></p>
 
+    <section id="change-username-section">
+      <h2>Username</h2>
+      <p>Username attuale: <strong id="current-username-display"></strong></p>
+      <p>Questo è il nome che apparirà nella <a href="leaderboard.html">classifica pubblica</a>.</p>
+      <input type="text" id="new-username" placeholder="Nuovo username">
+      <button onclick="changeUsername()">Aggiorna username</button>
+      <p id="change-username-error"></p>
+      <p id="change-username-success"></p>
+    </section>
+
     <section id="change-password-section">
       <h2>Cambia password</h2>
       <input type="password" id="old-password" placeholder="Vecchia password">

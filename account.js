@@ -29,7 +29,60 @@ function initAccountPage() {
     document.getElementById('account-email-display').textContent = currentUser.email;
     document.getElementById('account-main-section').style.display = 'block';
     document.getElementById('recovery-section').style.display = 'none';
+    loadCurrentUsername();
   });
+}
+
+// ── 0. Cambio username ──
+async function loadCurrentUsername() {
+  const { data: profile, error } = await sb
+    .from('profiles')
+    .select('username')
+    .eq('id', currentUser.id)
+    .single();
+
+  if (!error && profile) {
+    document.getElementById('current-username-display').textContent = profile.username;
+    document.getElementById('new-username').value = profile.username;
+  }
+}
+
+function isValidUsername(username) {
+  // 3-20 caratteri, solo lettere, cifre e underscore — niente spazi o
+  // caratteri che potrebbero creare problemi se mostrati in classifica.
+  return /^[a-zA-Z0-9_]{3,20}$/.test(username);
+}
+
+async function changeUsername() {
+  const newUsername = document.getElementById('new-username').value.trim();
+  const errorEl = document.getElementById('change-username-error');
+  const successEl = document.getElementById('change-username-success');
+
+  errorEl.textContent = '';
+  successEl.textContent = '';
+
+  if (!isValidUsername(newUsername)) {
+    errorEl.textContent = 'Lo username deve avere 3-20 caratteri: lettere, numeri o underscore, senza spazi.';
+    return;
+  }
+
+  const { error } = await sb
+    .from('profiles')
+    .update({ username: newUsername })
+    .eq('id', currentUser.id);
+
+  if (error) {
+    // 23505 = unique_violation: username già in uso da un altro account.
+    if (error.code === '23505') {
+      errorEl.textContent = 'Questo username è già in uso, scegline un altro.';
+    } else {
+      errorEl.textContent = error.message;
+    }
+    return;
+  }
+
+  document.getElementById('current-username-display').textContent = newUsername;
+  successEl.textContent = 'Username aggiornato con successo.';
 }
 
 // ── 1. Cambio password diretto (richiede vecchia password) ──

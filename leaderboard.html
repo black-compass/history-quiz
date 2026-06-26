@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Classifica — History Quiz</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+  <header>
+    <h1>Classifica</h1>
+  </header>
+
+  <main>
+    <p>Solo gli utenti registrati compaiono in classifica — chi gioca come ospite non salva il punteggio.</p>
+
+    <p id="leaderboard-status"></p>
+
+    <table id="leaderboard-table" style="display:none">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>Username</th>
+          <th>Punteggio</th>
+        </tr>
+      </thead>
+      <tbody id="leaderboard-body"></tbody>
+    </table>
+
+    <p><a href="index.html">&larr; Torna al quiz</a></p>
+  </main>
+
+  <footer>
+    <p><a href="docs/privacy.html">Privacy Policy</a></p>
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="leaderboard.js"></script>
+</body>
+
+</html>
